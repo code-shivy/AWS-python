@@ -47,7 +47,26 @@ def lambda_handler(event, context):
             if elapsed_time.total_seconds() > number_of_seconds:
                 print(f"Job ID: {job['jobId']}, Job Name: {job['jobName']}, Elapsed Time: {elapsed_time}")
                 list_of_jobs.append({job['jobId']:job['jobName']})
-    return list_of_jobs
+    send_slack_alert(list_of_jobs)
+
+def send_slack_alert(list_of_jobs):
+    print("Calling slack alert")
+    if len(list_of_jobs) == 0:
+        print("No jobs runnaable for more than a day")
+        return 0
+    
+    print("sending slack alert")  
+    slack_data=f"""
+    :red_circle: Batch Monitoring:
+    Job ID and Job Name stuck in runnable for more than 24 hours are: {list_of_jobs}
+    """
+    post = {	"text":"{0}".format(slack_data)	}
+    slack_hook = <slack_Hook>
+    response = requests.post(slack_hook, data=json.dumps(post),headers={'Content-Type': 'application/json'})
+    if response.status_code!=200:
+        raise ValueError('Request to slack returned an error %s, the response is:\n%s'
+        % (response.status_code, response.text))
+
 
 
 
