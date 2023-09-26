@@ -16,7 +16,7 @@ def lambda_handler(event, context):
         job_queue_name = job_queue['jobQueueName']
     
     # List running jobs in each job queue
-        running_jobs = batch_client.list_jobs(jobQueue=job_queue_name, jobStatus='RUNNABLE')
+        running_jobs = batch_client.list_jobs(jobQueue=job_queue_name, jobStatus='RUNNABLE')      ## Replace the jobStatus in order to get more states like Running, Starting etc. 
     
         #print(f"Running jobs in '{job_queue_name}':")
     
